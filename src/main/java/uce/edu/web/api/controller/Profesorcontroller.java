@@ -15,7 +15,7 @@ public class Profesorcontroller {
     private IProfesorService profesorService;
 
     @GET
-    @Path("/consultarProf/{id}")
+    @Path("/{id}")
     public Profesor consultaPorId(@PathParam("id") Integer id) {
         return this.profesorService.buscarPorId(id);
     }
