@@ -8,6 +8,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -34,26 +35,35 @@ public class Estudiantecontroller {// se lo suele llamar el servicion - web serv
         return this.estudianteService.buscarTodos();
     }
 
-    // @RequestBody es una anotacion opcional
-    public void guardar(@RequestBody Estudiante estudiante) {
+    @POST // Indica que este método maneja solicitudes POST
+    @Path("")
+    public void guardar(Estudiante estudiante) {
+        this.estudianteService.guardar(estudiante);
 
     }
 
     @PUT
     @Path("/{id}")
     public void actualizar(@RequestBody Estudiante estudiante, @PathParam("id") Integer id) {
-
+        estudiante.setId(id);
+        this.estudianteService.actualizarPorId(estudiante);
     }
 
     @PATCH
     @Path("/{id}")
     public void actualizarParcial(@RequestBody Estudiante estudiante, @PathParam("id") Integer id) {
-
+        estudiante.setId(id);
+        Estudiante e = this.estudianteService.buscarPorId(id);
+        if (estudiante.getApellido() != null) {
+            e.setApellido(estudiante.getApellido());
+        }
+        this.estudianteService.actualizarParcialPorId(estudiante);
     }
 
     @DELETE
     @Path("/{id}")
     public void borrarPorId(@PathParam("id") Integer id) {
+        this.estudianteService.borrarPorId(id);
 
     }
 
