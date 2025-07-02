@@ -8,7 +8,7 @@ public interface IEstudianteRepo {
 
     public Estudiante seleccionarPortId(Integer id);
 
-    public List<Estudiante> seleccionarTodos();
+    public List<Estudiante> seleccionarTodos(String genero);
 
     public void actualizarPorId(Estudiante estudiante);
 

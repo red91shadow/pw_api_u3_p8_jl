@@ -2,6 +2,7 @@ package uce.edu.web.api.controller;
 
 import java.util.List;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
 import jakarta.inject.Inject;
@@ -12,6 +13,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.QueryParam;
 import uce.edu.web.api.repository.modelo.Estudiante;
 import uce.edu.web.api.service.IEstudianteService;
 
@@ -22,21 +24,25 @@ public class Estudiantecontroller {// se lo suele llamar el servicion - web serv
     private IEstudianteService estudianteService;
 
     @GET
-    @Path("/{id}")
+    @Path("/{id}") // path param se usa para consultar un recurso mediante su id
     public Estudiante consultarPorId(@PathParam("id") Integer id) { // se lo suele llamar capacidades
         return this.estudianteService.buscarPorId(id);
 
     }
 
+    // ?genero=F&provincia=pichincha
     @GET
     @Path("")
-    public List<Estudiante> consultarTodos() {
-
-        return this.estudianteService.buscarTodos();
+    @Operation(summary = "conusltar estudiantes")
+    public List<Estudiante> consultarTodos(@QueryParam("genero") String genero,
+            @QueryParam("provincia") String provincia) {
+        System.out.println(provincia);
+        return this.estudianteService.buscarTodos(genero);
     }
 
     @POST // Indica que este método maneja solicitudes POST
     @Path("")
+    @Operation(summary = "Guardar Estudiante", description = "Nos permiete guardar en la .....")
     public void guardar(Estudiante estudiante) {
         this.estudianteService.guardar(estudiante);
 
@@ -57,11 +63,11 @@ public class Estudiantecontroller {// se lo suele llamar el servicion - web serv
         if (estudiante.getApellido() != null) {
             e.setApellido(estudiante.getApellido());
         }
-        if(estudiante.getFechaNacimiento() != null){
+        if (estudiante.getFechaNacimiento() != null) {
             e.setFechaNacimiento(estudiante.getFechaNacimiento());
         }
 
-        if(estudiante.getNombre() != null){
+        if (estudiante.getNombre() != null) {
             e.setNombre(estudiante.getNombre());
         }
         this.estudianteService.actualizarParcialPorId(estudiante);
