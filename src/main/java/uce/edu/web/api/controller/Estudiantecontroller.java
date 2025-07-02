@@ -57,6 +57,13 @@ public class Estudiantecontroller {// se lo suele llamar el servicion - web serv
         if (estudiante.getApellido() != null) {
             e.setApellido(estudiante.getApellido());
         }
+        if(estudiante.getFechaNacimiento() != null){
+            e.setFechaNacimiento(estudiante.getFechaNacimiento());
+        }
+
+        if(estudiante.getNombre() != null){
+            e.setNombre(estudiante.getNombre());
+        }
         this.estudianteService.actualizarParcialPorId(estudiante);
     }
 
