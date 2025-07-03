@@ -1,19 +1,13 @@
 package uce.edu.web.api.controller;
 
-import java.util.List;
-
+import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.hibernate.annotations.Type;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.PATCH;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.QueryParam;
 import uce.edu.web.api.repository.modelo.Estudiante;
 import uce.edu.web.api.service.IEstudianteService;
 
@@ -25,23 +19,32 @@ public class Estudiantecontroller {// se lo suele llamar el servicion - web serv
 
     @GET
     @Path("/{id}") // path param se usa para consultar un recurso mediante su id
-    public Estudiante consultarPorId(@PathParam("id") Integer id) { // se lo suele llamar capacidades
-        return this.estudianteService.buscarPorId(id);
+    @Produces(MediaType.APPLICATION_XML)
+
+    public Response consultarPorId(@PathParam("id") Integer id) { // se lo suele llamar capacidades
+
+        return Response.status(227).entity(this.estudianteService.buscarPorId(id)).build();
 
     }
+    // mediaType es el formato donde ser reciba el body
 
     // ?genero=F&provincia=pichincha
     @GET
     @Path("")
-    @Operation(summary = "conusltar estudiantes")
-    public List<Estudiante> consultarTodos(@QueryParam("genero") String genero,
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "conusltar estudiantes", description = "Este endpoint permiete registrar un nuevo estudiatne ")
+    public Response consultarTodos(@QueryParam("genero") String genero,
             @QueryParam("provincia") String provincia) {
         System.out.println(provincia);
-        return this.estudianteService.buscarTodos(genero);
+        return Response.status(Response.Status.OK).entity(this.estudianteService.buscarTodos(genero)).build();
+
     }
+    // mensajes informativos desde codigos desde el 100
+    // mensajes
 
     @POST // Indica que este método maneja solicitudes POST
     @Path("")
+    @Consumes(MediaType.APPLICATION_XML)
     @Operation(summary = "Guardar Estudiante", description = "Nos permiete guardar en la .....")
     public void guardar(Estudiante estudiante) {
         this.estudianteService.guardar(estudiante);
