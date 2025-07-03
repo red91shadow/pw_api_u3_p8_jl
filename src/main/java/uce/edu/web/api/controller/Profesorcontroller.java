@@ -2,9 +2,11 @@ package uce.edu.web.api.controller;
 
 import java.util.List;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
 import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
@@ -12,6 +14,10 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import uce.edu.web.api.repository.modelo.Profesor;
 
 import uce.edu.web.api.service.IProfesorService;
@@ -24,35 +30,51 @@ public class Profesorcontroller {
 
     @GET
     @Path("/{id}")
-    public Profesor consultaPorId(@PathParam("id") Integer id) {
-        return this.profesorService.buscarPorId(id);
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Consultar por ID", description = "Nos permiete permite conultar un elemento de la tabla estudiante mediatne un id")
+    public Response consultaPorId(@PathParam("id") Integer id) {
+
+        return Response.status(Response.Status.OK).entity(this.profesorService.buscarPorId(id)).build();
     }
 
     @GET
     @Path("")
-    public List<Profesor> consultarTodos() {
-        return this.profesorService.buscarTodos();
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "consultar profesores", description = "Nos permite ver todos los elementos de la tabla profesores")
+    public Response consultarTodos(@QueryParam("genero") String genero,
+            @QueryParam("provincia") String provincia) {
+        System.out.println(provincia);
+        return Response.status(Response.Status.OK).entity(this.profesorService.buscarTodos(genero)).build();
 
     }
 
     @POST
     @Path("")
-    public void guardar(@RequestBody Profesor profesor) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Guardar Profesor", description = "Nos permiete guardar en la .....")
+    public Response guardar(@RequestBody Profesor profesor) {
         this.profesorService.guardar(profesor);
+        return Response.status(Response.Status.OK).build();
 
     }
 
     @PUT
     @Path("/{id}")
-    public void actualizar(@RequestBody Profesor profesor, @PathParam("id") Integer id) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Actualizar profesor", description = "Nos permiete actualizar un profesor especifico  mediante su id")
+    public Response actualizar(@RequestBody Profesor profesor, @PathParam("id") Integer id) {
 
         profesor.setId(id);
         this.profesorService.actualizarParcialPorId(profesor);
+        return Response.status(Response.Status.OK).build();
+
     }
 
     @PATCH
     @Path("/{id}")
-    public void actualizarParcial(@RequestBody Profesor profesor, @PathParam("id") Integer id) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Actualizar parcial de un profesor", description = "Nos actualizar un profesor especifico mediante su id")
+    public Response actualizarParcial(@RequestBody Profesor profesor, @PathParam("id") Integer id) {
 
         profesor.setId(id);
         Profesor e = this.profesorService.buscarPorId(id);
@@ -77,12 +99,17 @@ public class Profesorcontroller {
         }
 
         this.profesorService.actualizarParcialPorId(profesor);
+        return Response.status(Response.Status.OK).build();
+
     }
 
     @DELETE
     @Path("/{id}")
-    public void borrarPorId(@PathParam("id") Integer id) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Borrar profesor", description = "Nos permiete eliminar un profesor especifico mediante un id")
+    public Response borrarPorId(@PathParam("id") Integer id) {
         this.profesorService.borrarPorId(id);
+        return Response.status(Response.Status.OK).build();
 
     }
 

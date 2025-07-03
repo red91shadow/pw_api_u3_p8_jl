@@ -28,7 +28,19 @@ public class Profesor {
     @Column(name = "prof_cargaHoraria")
     private Integer cargaHoraria;
 
+    @Column(name = "prof_genero")
+    private String genero;
+
     // setters and getters
+
+    
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
 
     public Integer getId() {
         return id;
