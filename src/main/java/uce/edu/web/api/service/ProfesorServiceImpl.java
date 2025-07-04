@@ -20,8 +20,8 @@ public class ProfesorServiceImpl implements IProfesorService {
     }
 
     @Override
-    public List<Profesor> buscarTodos() {
-        return this.profesorRepo.seleccionarTodos();
+    public List<Profesor> buscarTodos(String genero) {
+        return this.profesorRepo.seleccionarTodos(genero);
     }
 
     @Override
