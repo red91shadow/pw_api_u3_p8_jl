@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import jakarta.persistence.Column;
 import jakarta.ws.rs.core.UriInfo;
 import uce.edu.web.api.controller.Estudiantecontroller;
 

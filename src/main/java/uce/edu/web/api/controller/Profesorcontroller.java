@@ -1,5 +1,6 @@
 package uce.edu.web.api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
@@ -16,11 +17,15 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
+import uce.edu.web.api.repository.modelo.Hijo;
 import uce.edu.web.api.repository.modelo.Profesor;
 
 import uce.edu.web.api.service.IProfesorService;
+import uce.edu.web.api.service.to.ProfesorTo;
 
 @Path("/profesores")
 public class Profesorcontroller {
@@ -32,9 +37,10 @@ public class Profesorcontroller {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Consultar por ID", description = "Nos permiete permite conultar un elemento de la tabla estudiante mediatne un id")
-    public Response consultaPorId(@PathParam("id") Integer id) {
+    public Response consultaPorId(@PathParam("id") Integer id, @Context UriInfo uriInfo) {
 
-        return Response.status(Response.Status.OK).entity(this.profesorService.buscarPorId(id)).build();
+        ProfesorTo prof = this.profesorService.buscarPorId(id,uriInfo) ;
+        return Response.status(Response.Status.OK).entity(prof).build();
     }
 
     @GET
@@ -70,38 +76,38 @@ public class Profesorcontroller {
 
     }
 
-    @PATCH
-    @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Actualizar parcial de un profesor", description = "Nos actualizar un profesor especifico mediante su id")
-    public Response actualizarParcial(@RequestBody Profesor profesor, @PathParam("id") Integer id) {
+    // @PATCH
+    // @Path("/{id}")
+    // @Consumes(MediaType.APPLICATION_JSON)
+    // @Operation(summary = "Actualizar parcial de un profesor", description = "Nos actualizar un profesor especifico mediante su id")
+    // public Response actualizarParcial(@RequestBody Profesor profesor, @PathParam("id") Integer id) {
 
-        profesor.setId(id);
-        Profesor e = this.profesorService.buscarPorId(id);
-        if (profesor.getCargaHoraria() != null) {
-            e.setCargaHoraria(profesor.getCargaHoraria());
+    //     profesor.setId(id);
+    //     Profesor e = this.profesorService.buscarPorId(id);
+    //     if (profesor.getCargaHoraria() != null) {
+    //         e.setCargaHoraria(profesor.getCargaHoraria());
 
-        }
+    //     }
 
-        if (profesor.getDepartamento() != null) {
-            e.setDepartamento(profesor.getDepartamento());
+    //     if (profesor.getDepartamento() != null) {
+    //         e.setDepartamento(profesor.getDepartamento());
 
-        }
+    //     }
 
-        if (profesor.getLastName() != null) {
-            e.setLastName(profesor.getLastName());
+    //     if (profesor.getLastName() != null) {
+    //         e.setLastName(profesor.getLastName());
 
-        }
+    //     }
 
-        if (profesor.getName() != null) {
-            e.setName(profesor.getName());
+    //     if (profesor.getName() != null) {
+    //         e.setName(profesor.getName());
 
-        }
+    //     }
 
-        this.profesorService.actualizarParcialPorId(profesor);
-        return Response.status(Response.Status.OK).build();
+    //     this.profesorService.actualizarParcialPorId(profesor);
+    //     return Response.status(Response.Status.OK).build();
 
-    }
+    // }
 
     @DELETE
     @Path("/{id}")
@@ -111,6 +117,23 @@ public class Profesorcontroller {
         this.profesorService.borrarPorId(id);
         return Response.status(Response.Status.OK).build();
 
+    }
+
+      @GET
+    @Path("/{id}/hijos")
+    public List<Hijo> obtenerHijosPorId(@PathParam("id") Integer id) {
+
+        Hijo h1 = new Hijo();
+        h1.setNombre("Nathan");
+
+        Hijo h2 = new Hijo();
+        h2.setNombre("Drake");
+
+        List<Hijo> hijos = new ArrayList<>();
+        hijos.add(h1);
+        hijos.add(h2);
+
+        return hijos;
     }
 
 }
