@@ -18,6 +18,7 @@ import com.arjuna.ats.internal.jdbc.drivers.modifiers.list;
 
 import uce.edu.web.api.repository.modelo.Estudiante;
 import uce.edu.web.api.repository.modelo.Hijo;
+import uce.edu.web.api.service.HijoService;
 import uce.edu.web.api.service.IEstudianteService;
 import uce.edu.web.api.service.to.EstudianteTo;
 
@@ -26,12 +27,15 @@ public class Estudiantecontroller {// se lo suele llamar el servicion - web serv
 
     @Inject
     private IEstudianteService estudianteService;
+    @Inject
+    private HijoService hijoService;
 
     @GET
     @Path("/{id}") // path param se usa para consultar un recurso mediante su id
     @Produces(MediaType.APPLICATION_JSON)
 
-    public Response consultarPorId(@PathParam("id") Integer id, @Context UriInfo uriInfo) { // se lo suele llamar capacidades
+    public Response consultarPorId(@PathParam("id") Integer id, @Context UriInfo uriInfo) { // se lo suele llamar
+                                                                                            // capacidades
 
         EstudianteTo estu = this.estudianteService.buscarPorId(id, uriInfo);
 
@@ -77,23 +81,25 @@ public class Estudiantecontroller {// se lo suele llamar el servicion - web serv
     // @PATCH
     // @Path("/{id}")
     // @Consumes(MediaType.APPLICATION_JSON)
-    // @Operation(summary = "Actualizar parcial de un estudiante", description = "Nos actualizar un estudiante especifico mediante su id")
+    // @Operation(summary = "Actualizar parcial de un estudiante", description =
+    // "Nos actualizar un estudiante especifico mediante su id")
 
-    // public Response actualizarParcial(@RequestBody Estudiante estudiante, @PathParam("id") Integer id) {
-    //     estudiante.setId(id);
-    //     Estudiante e = this.estudianteService.buscarPorId(id);
-    //     if (estudiante.getApellido() != null) {
-    //         e.setApellido(estudiante.getApellido());
-    //     }
-    //     if (estudiante.getFechaNacimiento() != null) {
-    //         e.setFechaNacimiento(estudiante.getFechaNacimiento());
-    //     }
+    // public Response actualizarParcial(@RequestBody Estudiante estudiante,
+    // @PathParam("id") Integer id) {
+    // estudiante.setId(id);
+    // Estudiante e = this.estudianteService.buscarPorId(id);
+    // if (estudiante.getApellido() != null) {
+    // e.setApellido(estudiante.getApellido());
+    // }
+    // if (estudiante.getFechaNacimiento() != null) {
+    // e.setFechaNacimiento(estudiante.getFechaNacimiento());
+    // }
 
-    //     if (estudiante.getNombre() != null) {
-    //         e.setNombre(estudiante.getNombre());
-    //     }
-    //     this.estudianteService.actualizarParcialPorId(e);
-    //     return Response.status(Response.Status.OK).build();
+    // if (estudiante.getNombre() != null) {
+    // e.setNombre(estudiante.getNombre());
+    // }
+    // this.estudianteService.actualizarParcialPorId(e);
+    // return Response.status(Response.Status.OK).build();
     // }
 
     @DELETE
@@ -112,17 +118,8 @@ public class Estudiantecontroller {// se lo suele llamar el servicion - web serv
     @Path("/{id}/hijos")
     public List<Hijo> obtenerHijosPorId(@PathParam("id") Integer id) {
 
-        Hijo h1 = new Hijo();
-        h1.setNombre("Dirac");
+        return this.hijoService.buscarPorEstudianteId(id);
 
-        Hijo h2 = new Hijo();
-        h2.setNombre("Paul");
-
-        List<Hijo> hijos = new ArrayList<>();
-        hijos.add(h1);
-        hijos.add(h2);
-
-        return hijos;
     }
 
 }
