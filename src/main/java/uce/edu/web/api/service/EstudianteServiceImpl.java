@@ -16,12 +16,9 @@ public class EstudianteServiceImpl implements IEstudianteService {
     private IEstudianteRepo estudianteRepo;
 
     @Override
-    public EstudianteTo buscarPorId(Integer id, UriInfo uriInfo) {
-        Estudiante e1
-         = this.estudianteRepo.seleccionarPortId(id);
+    public Estudiante buscarPorId(Integer id) {
 
-        EstudianteTo e = new EstudianteTo(e1.getId(), e1.getNombre(), e1.getApellido(), e1.getFechaNacimiento(), e1.getGenero(), uriInfo);
-        return e;
+        return this.estudianteRepo.seleccionarPortId(id);
     }
 
     @Override

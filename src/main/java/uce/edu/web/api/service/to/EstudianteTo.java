@@ -17,18 +17,20 @@ public class EstudianteTo {
     private String genero;
     public Map<String, String> _links = new HashMap<>();
 
-    public EstudianteTo(Integer id, String nombre, String apellido, LocalDateTime fechaNacimiento, String genero,
-            UriInfo uriInfo) {
-        this.id = id;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.fechaNacimiento = fechaNacimiento;
-        this.genero = genero;
+    public Map<String, String> get_links() {
+        return _links;
+    }
 
+    public void set_links(Map<String, String> _links) {
+        this._links = _links;
+    }
+
+    public void buildURI(UriInfo uriInfo) {
         URI todosHijos = uriInfo.getBaseUriBuilder().path(Estudiantecontroller.class)
                 .path(Estudiantecontroller.class, "obtenerHijosPorId").build(id);
 
         _links.put("hijos", todosHijos.toString());
+
     }
 
     // SET y GET

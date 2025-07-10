@@ -2,12 +2,14 @@ package uce.edu.web.api.repository;
 
 import java.util.List;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import uce.edu.web.api.repository.modelo.Hijo;
 
-public class HijoRepoImpl implements HijoRepo {
+@ApplicationScoped
+public class HijoRepoImpl implements IHijoRepo {
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -15,7 +17,7 @@ public class HijoRepoImpl implements HijoRepo {
     public List<Hijo> buscarPorEstudianteId(Integer id) {
 
         TypedQuery<Hijo> myQuery = this.entityManager
-                .createQuery("SELECT h FROM HIJO h WHERE h.id =:id", Hijo.class);
+                .createQuery("SELECT h FROM Hijo h WHERE h.id =:id", Hijo.class);
         myQuery.setParameter("id", id);
         return myQuery.getResultList();
     }

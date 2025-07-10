@@ -18,7 +18,8 @@ import com.arjuna.ats.internal.jdbc.drivers.modifiers.list;
 
 import uce.edu.web.api.repository.modelo.Estudiante;
 import uce.edu.web.api.repository.modelo.Hijo;
-import uce.edu.web.api.service.HijoService;
+import uce.edu.web.api.service.IHijoService;
+import uce.edu.web.api.service.mapper.EstudianteMapper;
 import uce.edu.web.api.service.IEstudianteService;
 import uce.edu.web.api.service.to.EstudianteTo;
 
@@ -28,7 +29,7 @@ public class Estudiantecontroller {// se lo suele llamar el servicion - web serv
     @Inject
     private IEstudianteService estudianteService;
     @Inject
-    private HijoService hijoService;
+    private IHijoService hijoService;
 
     @GET
     @Path("/{id}") // path param se usa para consultar un recurso mediante su id
@@ -37,8 +38,9 @@ public class Estudiantecontroller {// se lo suele llamar el servicion - web serv
     public Response consultarPorId(@PathParam("id") Integer id, @Context UriInfo uriInfo) { // se lo suele llamar
                                                                                             // capacidades
 
-        EstudianteTo estu = this.estudianteService.buscarPorId(id, uriInfo);
+        EstudianteTo estu = EstudianteMapper.toTo(this.estudianteService.buscarPorId(id));
 
+        estu.buildURI(uriInfo);
         return Response.status(227).entity(estu).build();
 
     }

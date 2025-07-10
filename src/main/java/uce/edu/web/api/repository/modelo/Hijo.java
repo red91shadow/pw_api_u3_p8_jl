@@ -1,7 +1,10 @@
 package uce.edu.web.api.repository.modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -9,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+@JsonIgnoreType
 @Entity
 @Table(name = "hijo")
 public class Hijo {
@@ -23,8 +27,8 @@ public class Hijo {
 
     @Column(name = "hijo_apellido")
     private String apellido;
-    
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hijo_estudiante")
     private Estudiante estudiante;
 
