@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.ws.rs.core.UriInfo;
 import uce.edu.web.api.controller.Estudiantecontroller;
 
@@ -17,7 +19,7 @@ public class EstudianteTo {
     private String genero;
     public Map<String, String> _links = new HashMap<>();
 
-    public Map<String, String> get_links() {
+    private Map<String, String> get_links() {
         return _links;
     }
 
@@ -25,12 +27,17 @@ public class EstudianteTo {
         this._links = _links;
     }
 
+    
     public void buildURI(UriInfo uriInfo) {
+       
         URI todosHijos = uriInfo.getBaseUriBuilder().path(Estudiantecontroller.class)
                 .path(Estudiantecontroller.class, "obtenerHijosPorId").build(id);
 
         _links.put("hijos", todosHijos.toString());
 
+        URI self = uriInfo.getBaseUriBuilder().path(Estudiantecontroller.class)
+                .path(Integer.toString(this.id)).build();
+        _links.put("self", self.toString());
     }
 
     // SET y GET
