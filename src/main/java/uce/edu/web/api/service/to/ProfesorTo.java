@@ -17,20 +17,36 @@ public class ProfesorTo {
     private String genero;
     public Map<String, String> _links = new HashMap<>();
 
-    public ProfesorTo(Integer id, String name, String lastName, String departamento, Integer cargaHoraria,
-            String genero, UriInfo uriInfo) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.departamento = departamento;
-        this.cargaHoraria = cargaHoraria;
-        this.genero = genero;
-
-        URI todosHijos = uriInfo.getBaseUriBuilder().path(Profesorcontroller.class)
-                .path(Profesorcontroller.class, "obtenerHijosPorId").build(id);
-
-        _links.put("hijos", todosHijos.toString());
+    // Constructor vacío (implícito, no es necesario escribirlo, pero es crucial que exista)
+    public ProfesorTo() {
     }
+
+    public Map<String, String> get_links() {
+        return _links;
+    }
+
+    public void set_links(Map<String, String> _links) {
+        this._links = _links;
+    }
+
+    // Método separado para construir los links, igual que en EstudianteTo
+    public void buildURI(UriInfo uriInfo) {
+        // Link al recurso de hijos del profesor
+        URI todosHijos = uriInfo.getBaseUriBuilder()
+                .path(Profesorcontroller.class)
+                .path(Profesorcontroller.class, "obtenerHijosPorId")
+                .build(this.id);
+        _links.put("hijos", todosHijos.toString());
+
+        // Link al propio recurso (self)
+        URI self = uriInfo.getBaseUriBuilder()
+                .path(Profesorcontroller.class)
+                .path(Integer.toString(this.id))
+                .build();
+        _links.put("self", self.toString());
+    }
+
+    // Getters y Setters para todos los campos
 
     public Integer getId() {
         return id;
@@ -79,5 +95,4 @@ public class ProfesorTo {
     public void setGenero(String genero) {
         this.genero = genero;
     }
-
 }
