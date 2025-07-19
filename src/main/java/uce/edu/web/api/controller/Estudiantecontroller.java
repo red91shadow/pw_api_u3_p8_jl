@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -11,6 +12,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 
+import org.eclipse.microprofile.jwt.Claim;
+import org.eclipse.microprofile.jwt.ClaimValue;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
@@ -25,12 +29,18 @@ import uce.edu.web.api.service.to.EstudianteTo;
 public class Estudiantecontroller {// se lo suele llamar el servicion - web service
 
     @Inject
+    JsonWebToken jwt;
+    @Inject
+    @Claim("sub")
+    ClaimValue<String> subject;
+    @Inject
     private IEstudianteService estudianteService;
     @Inject
     private IHijoService hijoService;
 
     @GET
     @Path("/{id}") // path param se usa para consultar un recurso mediante su id
+    @RolesAllowed("admin")
     @Produces(MediaType.APPLICATION_JSON)
     public Response consultarPorId(@PathParam("id") Integer id, @Context UriInfo uriInfo) { // se lo suele llamar
                                                                                             // capacidades
